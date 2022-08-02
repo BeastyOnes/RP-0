@@ -198,7 +198,7 @@ namespace KerbalConstructionTime
                 GUILayout.Label(locTxt);
                 GUILayout.Label(Utilities.GetColonFormattedTimeWithTooltip(buildItem.GetTimeLeft(), txt+locTxt+buildItem.GetItemName()));
 
-                if (!HighLogic.LoadedSceneIsEditor && TimeWarp.CurrentRateIndex == 0 && GUILayout.Button(new GUIContent($"Warp to{Environment.NewLine}Complete", $"√ Gain/Loss:\n{KCTGameStates.GetBudgetDelta(buildItem.GetTimeLeft()):N0}")))
+                if (!HighLogic.LoadedSceneIsEditor && TimeWarp.CurrentRateIndex == 0 && GUILayout.Button(new GUIContent($"Warp to{Environment.NewLine}Complete", $"√ Gain/Loss:\n{KCTGameStates.GetBudgetDelta(buildItem.GetTimeLeft()):N0}"), GetMultilineStyle(GUI.skin.button)))
                 {
                     KCTWarpController.Create(null); // warp to next item
                 }

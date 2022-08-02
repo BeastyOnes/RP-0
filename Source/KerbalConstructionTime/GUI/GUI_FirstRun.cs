@@ -16,7 +16,7 @@ namespace KerbalConstructionTime
         public static void DrawFirstRun(int windowID)
         {
             // reset fixed height to not have overflow on very long Labels
-            var multilineStyle = GetLabelMultilineStyle();
+            var multilineStyle = GetMultilineStyle(GUI.skin.label);
 
             if (IsPrimarilyDisabled)
             {

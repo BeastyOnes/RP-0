@@ -334,17 +334,17 @@ namespace KerbalConstructionTime
             return _styleTextFieldRightAlign;
         }
         
-        private static GUIStyle GetLabelMultilineStyle()
+        private static GUIStyle GetMultilineStyle(GUIStyle template)
         {
             if (_styleLabelMultiline == null)
             {
-                _styleLabelMultiline = new GUIStyle(GUI.skin.label);
+                _styleLabelMultiline = new GUIStyle(template);
                 _styleLabelMultiline.fixedHeight = 0;
                 _styleLabelMultiline.wordWrap = true;
             }
             return _styleLabelMultiline;
         }
-        
+
         public static void EnterSCSubcene()
         {
             _inSCSubscene = true;
