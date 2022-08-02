@@ -1,13 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
+using RP0;
 
 namespace KerbalConstructionTime
 {
     public static partial class KCT_GUI
     {
-        private static Rect _personnelPosition = new Rect((Screen.width - 450) / 2, Screen.height / 4, 450, 1);
+        private const int _personnelWindowWidth = 450;
+        
+        private static Rect _personnelPosition = new Rect((Screen.width - (_personnelWindowWidth * UIHolder.UIScale)) / 2, Screen.height / 4, _personnelWindowWidth * UIHolder.UIScale, 1);
         private static int _personnelWindowHolder = 0;
         private static double _fundsCost = int.MinValue;
         private static double _nodeRate = int.MinValue;
@@ -42,22 +43,22 @@ namespace KerbalConstructionTime
             GUILayout.BeginVertical();
 
             GUILayout.BeginHorizontal();
-            GUILayout.Label("Applicants:", GUILayout.Width(120));
+            GUILayout.Label("Applicants:", UIHolder.Width(120));
             GUILayout.Label(KCTGameStates.UnassignedPersonnel.ToString("N0"), GetLabelRightAlignStyle());
             GUILayout.EndHorizontal();
 
             int tE = KCTGameStates.TotalEngineers;
             GUILayout.BeginHorizontal();
-            GUILayout.Label("Total Engineers:", GUILayout.Width(120));
-            GUILayout.Label(tE.ToString("N0"), GetLabelRightAlignStyle(), GUILayout.Width(60));
-            GUILayout.Label("Salary and Facilities:", GetLabelRightAlignStyle(), GUILayout.Width(150));
+            GUILayout.Label("Total Engineers:", UIHolder.Width(120));
+            GUILayout.Label(tE.ToString("N0"), GetLabelRightAlignStyle(), UIHolder.Width(60));
+            GUILayout.Label("Salary and Facilities:", GetLabelRightAlignStyle(), UIHolder.Width(150));
             GUILayout.Label($"√{KCTGameStates.GetSalaryEngineers():N0}", GetLabelRightAlignStyle());
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
-            GUILayout.Label("Total Researchers:", GUILayout.Width(120));
-            GUILayout.Label(KCTGameStates.Researchers.ToString("N0"), GetLabelRightAlignStyle(), GUILayout.Width(60));
-            GUILayout.Label("Salary and Facilities:", GetLabelRightAlignStyle(), GUILayout.Width(150));
+            GUILayout.Label("Total Researchers:", UIHolder.Width(120));
+            GUILayout.Label(KCTGameStates.Researchers.ToString("N0"), GetLabelRightAlignStyle(), UIHolder.Width(60));
+            GUILayout.Label("Salary and Facilities:", GetLabelRightAlignStyle(), UIHolder.Width(150));
             GUILayout.Label($"√{KCTGameStates.GetSalaryResearchers():N0}", GetLabelRightAlignStyle());
             GUILayout.EndHorizontal();
 
@@ -92,9 +93,9 @@ namespace KerbalConstructionTime
             LCItem currentLC = KSC.LaunchComplexes[_LCIndex];
 
             GUILayout.BeginHorizontal();
-            GUILayout.Label("Engineers:", GUILayout.Width(100));
-            GUILayout.Label(KSC.Engineers.ToString("N0"), GetLabelRightAlignStyle(), GUILayout.Width(100));
-            GUILayout.Label($"Unassigned:", GetLabelRightAlignStyle(), GUILayout.Width(100));
+            GUILayout.Label("Engineers:", UIHolder.Width(100));
+            GUILayout.Label(KSC.Engineers.ToString("N0"), GetLabelRightAlignStyle(), UIHolder.Width(100));
+            GUILayout.Label($"Unassigned:", GetLabelRightAlignStyle(), UIHolder.Width(100));
             GUILayout.Label($"{KSC.UnassignedEngineers}", GetLabelRightAlignStyle());
             GUILayout.EndHorizontal();
 
@@ -244,12 +245,12 @@ namespace KerbalConstructionTime
                 _currentPersonnelHover = PersonnelButtonHover.None;
 
             GUILayout.BeginHorizontal();
-            GUILayout.Label("Researchers:", GUILayout.Width(90));
+            GUILayout.Label("Researchers:", UIHolder.Width(90));
             GUILayout.Label(KCTGameStates.Researchers.ToString("N0"), GetLabelRightAlignStyle());
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
-            GUILayout.Label("Max:", GUILayout.Width(90));
+            GUILayout.Label("Max:", UIHolder.Width(90));
             GUILayout.Label(PresetManager.Instance.ActivePreset.ResearcherCaps[Utilities.GetBuildingUpgradeLevel(SpaceCenterFacility.ResearchAndDevelopment)].ToString("N0"), GetLabelRightAlignStyle());
             GUILayout.EndHorizontal();
 

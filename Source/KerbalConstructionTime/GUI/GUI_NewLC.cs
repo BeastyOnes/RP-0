@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using RP0;
 
 namespace KerbalConstructionTime
 {
@@ -295,7 +296,7 @@ namespace KerbalConstructionTime
                 GUIStates.ShowNewLC = false;
                 GUIStates.ShowModifyLC = false;
                 _centralWindowPosition.height = 1;
-                _centralWindowPosition.width = 300;
+                _centralWindowPosition.width = 300 * UIHolder.UIScale;
                 _centralWindowPosition.x = (Screen.width - 300) / 2;
                 if (!HighLogic.LoadedSceneIsEditor)
                     GUIStates.ShowBuildList = true;
@@ -304,7 +305,7 @@ namespace KerbalConstructionTime
             if (GUILayout.Button("Cancel"))
             {
                 _centralWindowPosition.height = 1;
-                _centralWindowPosition.width = 150;
+                _centralWindowPosition.width = 150 * UIHolder.UIScale;
                 _centralWindowPosition.x = (Screen.width - 150) / 2;
                 GUIStates.ShowNewLC = false;
                 GUIStates.ShowModifyLC = false;

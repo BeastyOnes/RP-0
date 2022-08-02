@@ -1,13 +1,18 @@
 ﻿using System;
 using UnityEngine;
+using RP0;
 
 namespace KerbalConstructionTime
 {
     public static partial class KCT_GUI
     {
-        private const int _presetsWidth = 900, _presetsHeight = 600;
-        private static Rect _presetPosition = new Rect((Screen.width-_presetsWidth) / 2, (Screen.height-_presetsHeight) / 2, _presetsWidth, _presetsHeight);
-        private static Rect _presetNamingWindowPosition = new Rect((Screen.width - 250) / 2, (Screen.height - 50) / 2, 250, 50);
+        private const int _presetWindowWidth = 900;
+        private const int _presetWindowHeight = 600;
+        private const int _presetNamingWindowWidth = 250;
+        private const int _presetNamingWindowHeight = 50;
+        
+        private static Rect _presetWindowPosition = new Rect((Screen.width-_presetWindowWidth*UIHolder.UIScale) / 2, (Screen.height-_presetWindowHeight*UIHolder.UIScale) / 2, _presetWindowWidth * UIHolder.UIScale, _presetWindowHeight * UIHolder.UIScale);
+        private static Rect _presetNamingWindowPosition = new Rect((Screen.width - _presetNamingWindowWidth*UIHolder.UIScale) / 2, (Screen.height - _presetNamingWindowHeight*UIHolder.UIScale) / 2, _presetNamingWindowWidth*UIHolder.UIScale, _presetNamingWindowHeight*UIHolder.UIScale);
         private static int _presetIndex = -1;
         private static KCT_Preset _workingPreset;
         private static Vector2 _presetScrollView, _presetMainScroll;
@@ -35,7 +40,7 @@ namespace KerbalConstructionTime
             GUILayout.BeginVertical();
             GUILayout.Label("Presets", _yellowText, GUILayout.ExpandHeight(false));
             //preset toolbar in a scrollview
-            _presetScrollView = GUILayout.BeginScrollView(_presetScrollView, GUILayout.Width(_presetPosition.width / 6f)); //TODO: update HighLogic.Skin.textArea
+            _presetScrollView = GUILayout.BeginScrollView(_presetScrollView, UIHolder.Width(_presetWindowPosition.width / 6f));
             string[] presetShortNames = PresetManager.Instance.PresetShortNames(true);
             if (_presetIndex == -1)
             {
@@ -63,7 +68,7 @@ namespace KerbalConstructionTime
             //presetIndex = GUILayout.Toolbar(presetIndex, presetNames);
 
             GUILayout.EndScrollView();
-            if (GUILayout.Button("Save as\nNew Preset", GUILayout.ExpandHeight(false)))
+            if (GUILayout.Button("Save as New Preset", GUILayout.ExpandHeight(false)))
             {
                 //create new preset
                 SaveAsNewPreset(_workingPreset);
@@ -101,15 +106,13 @@ namespace KerbalConstructionTime
 
             GUILayout.BeginHorizontal();
             GUILayout.Label("Starting Personnel:");
-            _workingPreset.GeneralSettings.StartingPersonnel = GUILayout.TextField(_workingPreset.GeneralSettings.StartingPersonnel, GUILayout.Width(100));
+            _workingPreset.GeneralSettings.StartingPersonnel = GUILayout.TextField(_workingPreset.GeneralSettings.StartingPersonnel, UIHolder.Width(100));
             GUILayout.EndHorizontal();
             GUILayout.EndVertical();
             GUILayout.EndVertical(); //end Features
-
-
+            
             
             GUILayout.EndHorizontal(); //end feature/time setting split
-
             
             GUILayout.EndScrollView();
 
@@ -166,7 +169,7 @@ namespace KerbalConstructionTime
 
             GUILayout.EndVertical(); //end column 2
 
-            GUILayout.BeginVertical(GUILayout.Width(100)); //Start general settings
+            GUILayout.BeginVertical(UIHolder.Width(100)); //Start general settings
             GUILayout.Label("General Settings", _yellowText);
             GUILayout.Label("NOTE: Affects all saves!", _yellowText);
             GUILayout.BeginVertical(HighLogic.Skin.textArea);
@@ -225,22 +228,22 @@ namespace KerbalConstructionTime
             GUILayout.BeginVertical();
             GUILayout.BeginHorizontal();
             GUILayout.Label("Preset name:");
-            _saveName = GUILayout.TextField(_saveName, GUILayout.Width(100));
+            _saveName = GUILayout.TextField(_saveName, UIHolder.Width(100));
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
             GUILayout.Label("Preset short name:");
-            _saveShort = GUILayout.TextField(_saveShort, GUILayout.Width(100));
+            _saveShort = GUILayout.TextField(_saveShort, UIHolder.Width(100));
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
             GUILayout.Label("Preset author(s):");
-            _saveAuthor = GUILayout.TextField(_saveAuthor, GUILayout.Width(100));
+            _saveAuthor = GUILayout.TextField(_saveAuthor, UIHolder.Width(100));
             GUILayout.EndHorizontal();
 
             //GUILayout.BeginHorizontal();
             GUILayout.Label("Preset description:");
-            _saveDesc = GUILayout.TextField(_saveDesc, GUILayout.Width(220));
+            _saveDesc = GUILayout.TextField(_saveDesc, UIHolder.Width(220));
             //GUILayout.EndHorizontal();
 
             _saveCareer = GUILayout.Toggle(_saveCareer, " Show in Career Games");

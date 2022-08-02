@@ -2,19 +2,21 @@
 using System.Linq;
 using ToolbarControl_NS;
 using UnityEngine;
+using RP0;
 
 namespace KerbalConstructionTime
 {
     public static partial class KCT_GUI
     {
-        private static Rect _buildPlansWindowPosition = new Rect(Screen.width - 300, 40, 300, 1);
+        private const int _buildPlansWindowWidth = 300;
+        
+        private static Rect _buildPlansWindowPosition = new Rect(Screen.width - _buildPlansWindowWidth * UIHolder.UIScale, 40, _buildPlansWindowWidth * UIHolder.UIScale, 1);
         private static Vector2 _buildPlansScrollPos;
         private static GUIStyle _buildPlansbutton;
         private static Texture2D _background;
         private static GUIContent _upContent;
         private static GUIContent _hoverContent;
         private static Rect _rect;
-        private static float _scale;
         private static GUIContent _content;
 
         private static SortedList<string, BuildListVessel> _plansList = null;
@@ -24,7 +26,7 @@ namespace KerbalConstructionTime
 
         internal static void InitBuildPlans()
         {
-            _buildPlansbutton = new GUIStyle(HighLogic.Skin.button);
+            _buildPlansbutton = new GUIStyle(RP0.UIHolder.RescaledKSPSkin.button);
             _buildPlansbutton.margin = new RectOffset(0, 0, 0, 0);
             _buildPlansbutton.padding = new RectOffset(0, 0, 0, 0);
             _buildPlansbutton.border = new RectOffset(0, 0, 0, 0);
@@ -52,10 +54,10 @@ namespace KerbalConstructionTime
             //up = GameDatabase.Instance.GetTexture("RP-0/PluginData/Icons/KCT_add_normal", false);
             //hover = GameDatabase.Instance.GetTexture("RP-0/PluginData/Icons/KCT_add_hover", false);
 
-            PositionAndSizeIcon();
+            PositionAndSizeBuildPlansIcon();
         }
-
-        private static void PositionAndSizeIcon()
+        
+        private static void PositionAndSizeBuildPlansIcon()
         {
             Texture2D upTex = Texture2D.Instantiate(_up);
             Texture2D hoverTex = Texture2D.Instantiate(_hover);
@@ -67,12 +69,12 @@ namespace KerbalConstructionTime
                 offset = 46;
             if (mechjebPresent)
                 offset = 140;
-            _scale = GameSettings.UI_SCALE;
+            var scale = GameSettings.UI_SCALE;
 
-            _rect = new Rect(Screen.width - (304 + offset) * _scale, 0, 42 * _scale, 38 * _scale);
+            _rect = new Rect(Screen.width - (304 + offset) * scale, 0, 42 * scale, 38 * scale);
             {
-                TextureScale.Bilinear(upTex, (int)(_up.width * _scale), (int)(_up.height * _scale));
-                TextureScale.Bilinear(hoverTex, (int)(_hover.width * _scale), (int)(_hover.height * _scale));
+                TextureScale.Bilinear(upTex, (int)(_up.width * scale), (int)(_up.height * scale));
+                TextureScale.Bilinear(hoverTex, (int)(_hover.width * scale), (int)(_hover.height * scale));
             }
             _upContent = new GUIContent("", upTex, "");
             _hoverContent = new GUIContent("", hoverTex, "");
@@ -84,10 +86,7 @@ namespace KerbalConstructionTime
                 _content = _hoverContent;
             else
                 _content = _upContent;
-            if (_scale != GameSettings.UI_SCALE)
-            {
-                PositionAndSizeIcon();
-            }
+
             // When this is true, and the mouse is NOT over the toggle, the toggle code is making the toggle active
             // which is showing the corners of the button as unfilled
             GUIStates.ShowBuildPlansWindow = GUI.Toggle(_rect, GUIStates.ShowBuildPlansWindow, _content, _buildPlansbutton);
@@ -104,7 +103,7 @@ namespace KerbalConstructionTime
                 {
                     if (EditorLogic.fetch.ship.shipName == "Untitled Space Craft" || EditorLogic.fetch.ship.shipName == "")
                     {
-                        if (GUILayout.Button("Cannot Add a Plan Without a Valid Name", GUILayout.Height(2 * 22)))
+                        if (GUILayout.Button("Cannot Add a Plan Without a Valid Name", UIHolder.Height(2 * 22)))
                         {
                             if (EditorLogic.fetch.ship.shipName == "Untitled Space Craft")
                             {
@@ -120,13 +119,13 @@ namespace KerbalConstructionTime
                     else
                     {
                         GUILayout.BeginHorizontal();
-                        if (GUILayout.Button("Add To Building Plans", GUILayout.Height(2 * 22)))
+                        if (GUILayout.Button("Add To Building Plans", UIHolder.Height(2 * 22)))
                         {
                             AddVesselToPlansList();
                         }
                         GUILayout.EndHorizontal();
                         GUILayout.BeginHorizontal();
-                        if (GUILayout.Button("Build", GUILayout.Height(2 * 22)))
+                        if (GUILayout.Button("Build", UIHolder.Height(2 * 22)))
                         {
                             Utilities.TryAddVesselToBuildList();
                             Utilities.RecalculateEditorBuildTime(EditorLogic.fetch.ship);
@@ -136,10 +135,10 @@ namespace KerbalConstructionTime
                 }
                 else
                 {
-                    GUILayout.Button("No vessel available", GUILayout.Height(2 * 22));
+                    GUILayout.Button("No vessel available", UIHolder.Height(2 * 22));
                 }
             }
-            GUILayout.Space(10);
+            UIHolder.Space(10);
             GUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
             GUILayout.Label("Available Building Plans");
@@ -156,7 +155,7 @@ namespace KerbalConstructionTime
                 GUILayout.BeginHorizontal();
                 GUILayout.Label("Name:");
                 GUILayout.EndHorizontal();
-                _buildPlansScrollPos = GUILayout.BeginScrollView(_buildPlansScrollPos, GUILayout.Height(250));
+                _buildPlansScrollPos = GUILayout.BeginScrollView(_buildPlansScrollPos, UIHolder.Height(250));
 
                 if (_plansList == null || _plansList.Count == 0)
                 {
@@ -169,7 +168,7 @@ namespace KerbalConstructionTime
                         continue;
                     GUILayout.BeginHorizontal();
                     {
-                        if (GUILayout.Button("X", _redButton, GUILayout.Width(butW)))
+                        if (GUILayout.Button("X", _redButton, UIHolder.Width(butW)))
                         {
                             _planToDelete = i;
                             InputLockManager.SetControlLock(ControlTypes.EDITOR_SOFT_LOCK, "KCTPopupLock");
@@ -181,11 +180,11 @@ namespace KerbalConstructionTime
                             PopupDialog.SpawnPopupDialog(new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), diag, false, HighLogic.UISkin);
                         }
 
-                            if (GUILayout.Button(b.ShipName))
-                            {
-                                Utilities.TryAddVesselToBuildList(b.CreateCopy(true), skipPartChecks : true);
-                            }
+                        if (GUILayout.Button(b.ShipName))
+                        {
+                            Utilities.TryAddVesselToBuildList(b.CreateCopy(true), skipPartChecks : true);
                         }
+                    }
 
                     GUILayout.EndHorizontal();
                 }
